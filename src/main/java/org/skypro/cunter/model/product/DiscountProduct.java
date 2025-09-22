@@ -8,7 +8,7 @@ public class DiscountProduct extends Product {
     private final double discountPercent;
 
     public DiscountProduct(UUID id, String name, double basePrice, double discountPercent) {
-        super(id, name, 0);
+        super(id, name);
 
         if (basePrice < 0) {
             throw new IllegalArgumentException("Базовая цена продукта не может быть отрицательной");
@@ -32,5 +32,14 @@ public class DiscountProduct extends Product {
     @Override
     public String toString() {
         return String.format("%s: %.2f (%.1f%% скидка)", getName(), getPrice(), discountPercent);
+    }
+    @Override
+    public String getSearchTerm() {
+        return getName();
+    }
+
+    @Override
+    public String getContentType() {
+        return "PRODUCT";
     }
 }

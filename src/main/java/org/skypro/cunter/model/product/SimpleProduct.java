@@ -7,7 +7,7 @@ public class SimpleProduct extends Product {
     private final double price;
 
     public SimpleProduct(UUID id, String name, double price) {
-        super(id, name, 0.0);  // Передаем 0, т.к. цена хранится в наследнике
+        super(id, name);
         if (price <= 0) {
             throw new IllegalArgumentException("Цена продукта должна быть строго больше 0");
         }
@@ -22,5 +22,14 @@ public class SimpleProduct extends Product {
     @Override
     public String toString() {
         return String.format("%s: %.2f руб.", getName(), price);
+    }
+    @Override
+    public String getSearchTerm() {
+        return getName();
+    }
+
+    @Override
+    public String getContentType() {
+        return "PRODUCT";
     }
 }

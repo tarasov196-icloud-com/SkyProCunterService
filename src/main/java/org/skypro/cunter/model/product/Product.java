@@ -7,21 +7,18 @@ import java.util.UUID;
 public abstract class Product implements Searchable {
     private final UUID id;
     private String name;
-    private double price;
 
-    public Product(UUID id, String name, double price) {
+
+    public Product(UUID id, String name) {
         if (id == null) {
             throw new IllegalArgumentException("id не может быть null");
         }
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("name не может быть null или пустым");
         }
-        if (price < 0) {
-            throw new IllegalArgumentException("price не может быть отрицательной");
-        }
         this.id = id;
         this.name = name;
-        this.price = price;
+
     }
 
     @Override
@@ -55,16 +52,4 @@ public abstract class Product implements Searchable {
 
     public abstract double getPrice();
 
-
-    protected double getBasePrice() {
-        return price;
-    }
-
-
-    protected void setBasePrice(double price) {
-        if (price < 0) {
-            throw new IllegalArgumentException("price не может быть отрицательной");
-        }
-        this.price = price;
-    }
 }

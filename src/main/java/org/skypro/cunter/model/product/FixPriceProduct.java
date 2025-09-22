@@ -6,7 +6,7 @@ public class FixPriceProduct extends Product {
     private static final double FIXED_PRICE = 99.0;
 
     public FixPriceProduct(UUID id, String name) {
-        super(id, name, 0.0);
+        super(id, name);
     }
 
     @Override
@@ -21,5 +21,14 @@ public class FixPriceProduct extends Product {
     @Override
     public String toString() {
         return String.format("%s: Фиксированная цена %.2f", getName(), FIXED_PRICE);
+    }
+    @Override
+    public String getSearchTerm() {
+        return getName();
+    }
+
+    @Override
+    public String getContentType() {
+        return "PRODUCT";
     }
 }
