@@ -16,11 +16,16 @@ public class StorageService {
     private final Map<UUID, Product> productStorage;
     private final Map<UUID, Article> articleStorage;
 
+
     public StorageService(Map<UUID, Product> productStorage, Map<UUID, Article> articleStorage) {
         this.productStorage = new HashMap<>();
         this.articleStorage = new HashMap<>();
         initializeArticles();
         initializeProducts();
+    }
+
+    public Optional<Product> getProductById(UUID id) {
+        return Optional.ofNullable(productStorage.get(id));
     }
 
     public void initializeArticles() {
@@ -44,6 +49,7 @@ public class StorageService {
     public Collection<Product> getAllProducts() {
         return productStorage.values();
     }
+
 
     public Collection<Searchable> getAllSearchables() {
         List<Searchable> combined = new ArrayList<>();
