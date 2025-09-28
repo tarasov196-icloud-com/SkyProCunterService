@@ -27,9 +27,9 @@ public class BasketService {
     }
 
     public void addProductToBasket(UUID id) {
-        boolean productExists = storageService.getProductById(id).isPresent();
-        if (!productExists) {
-            throw new IllegalArgumentException("Product with id " + id + " not found");
+        Product product = storageService.getProductById(id);
+        if (product == null) {
+            throw new IllegalArgumentException("Продукт с " + id + " не найден");
         }
         productBasket.addProduct(id);
     }
@@ -41,8 +41,8 @@ public class BasketService {
                 .map(entry -> {
                     UUID id = entry.getKey();
                     int quantity = entry.getValue();
-                    Product product = storageService.getProductById(id)
-                            .orElseThrow(() -> new IllegalStateException("Product not found for id: " + id));
+                    Product product = storageService.getProductById(id);
+                    productBasket.addProduct(product.getId());
                     return new BasketItem(product, quantity);
                 })
                 .collect(Collectors.toList());

@@ -41,7 +41,7 @@ public class ShopController {
 
     @GetMapping("/basket/{id}")
     public String addProduct(@PathVariable("id") UUID id) {
-        Optional<Product> productOpt = storageService.getProductById(id);
+        Optional<Product> productOpt = Optional.ofNullable(storageService.getProductById(id));
         if (productOpt.isPresent()) {
             basketService.addProductToBasket(id);
             return "Продукт успешно добавлен";
