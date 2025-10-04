@@ -1,5 +1,6 @@
 package org.skypro.cunter.service;
 
+import org.skypro.cunter.exception.NoSuchProductException;
 import org.skypro.cunter.model.basket.BasketItem;
 import org.skypro.cunter. model.basket.ProductBasket;
 import org.skypro.cunter.model.basket.UserBasket;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -27,11 +29,12 @@ public class BasketService {
     }
 
     public void addProductToBasket(UUID id) {
-        Product product = storageService.getProductById(id);
-        if (product == null) {
+        Optional<Product> productOpt = storageService.getProductById(id);
+        if (productOpt.isEmpty()) {
             throw new IllegalArgumentException("Продукт с " + id + " не найден");
         }
-        productBasket.addProduct(id);
+        Product product = productOpt.get();
+        productBasket.addProduct(product.getId());
     }
 
     public UserBasket getUserBasket() {
@@ -41,8 +44,9 @@ public class BasketService {
                 .map(entry -> {
                     UUID id = entry.getKey();
                     int quantity = entry.getValue();
-                    Product product = storageService.getProductById(id);
-                    productBasket.addProduct(product.getId());
+                    Product product = storageService.getProductById(id)
+                            .orElseThrow(() -> new NoSuchProductException("Продукт не найден: " + id));
+                    // Можно удалить строку productBasket.addProduct(product.getId());, так как это лишнее
                     return new BasketItem(product, quantity);
                 })
                 .collect(Collectors.toList());

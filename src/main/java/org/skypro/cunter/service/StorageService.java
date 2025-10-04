@@ -26,12 +26,12 @@ public class StorageService {
         initializeProducts();
     }
 
-    public Product getProductById(UUID id){
+    public Optional<Product> getProductById(UUID id) {
         Product product = productStorage.get(id);
-        if (product == null){
-            throw new NoSuchProductException("Продукт с id " + id + " не найден");
+        if (product == null) {
+            throw new NoSuchProductException("Product with id " + id + " not found");
         }
-        return product;
+        return Optional.ofNullable(product);
     }
 
     public void initializeArticles() {
