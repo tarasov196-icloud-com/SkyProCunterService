@@ -40,13 +40,14 @@ public class ShopController {
     }
 
     @GetMapping("/basket/{id}")
-    public String addProduct(@PathVariable("id") UUID id) {
+    public ResponseEntity<String> addProduct(@PathVariable("id") UUID id) {
         Optional<Product> productOpt = storageService.getProductById(id);
         if (productOpt.isPresent()) {
+            // Вызовите addProductToBasket с UUID
             basketService.addProductToBasket(id);
-            return "Продукт успешно добавлен";
+            return ResponseEntity.ok("Продукт успешно добавлен");
         } else {
-            return "Продукт не найден";
+            return ResponseEntity.status(404).body("Продукт не найден");
         }
     }
 

@@ -6,7 +6,9 @@ import org.skypro.cunter.model.product.Product;
 import org.skypro.cunter.model.product.SimpleProduct;
 import org.skypro.cunter.model.search.Searchable;
 
+
 import org.springframework.stereotype.Service;
+import org.skypro.cunter.exception.NoSuchProductException;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -25,7 +27,11 @@ public class StorageService {
     }
 
     public Optional<Product> getProductById(UUID id) {
-        return Optional.ofNullable(productStorage.get(id));
+        Product product = productStorage.get(id);
+        if (product == null) {
+            throw new NoSuchProductException("Product with id " + id + " not found");
+        }
+        return Optional.ofNullable(product);
     }
 
     public void initializeArticles() {
